@@ -7,6 +7,7 @@ from twilio.rest import Client as twilio_Client
 from twilio.twiml.messaging_response import MessagingResponse
 from coinbase.wallet.client import Client as coinbase_Client
 from flask import Flask, request, redirect
+from celery_flask import make_celery
 
 #figure out way to source file variables in python script
 #manual way: source bot_env_variables.env

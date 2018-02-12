@@ -2,4 +2,4 @@
 *.env
 
 #directories to ignore
-bot_environment
+EthBot_environment

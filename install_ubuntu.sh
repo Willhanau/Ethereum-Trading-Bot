@@ -1,12 +1,9 @@
 #!/bin/bash
 
 #install required packages
-sudo easy_install pip virtualenv
-
-#install homebrew
-#/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
-#brew install redis
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install -y python2.7 python-pip virtualenv redis
 
 #create virtual python environment
 if [ ! -f "bot_environment" ]; then
@@ -17,4 +14,4 @@ fi
 source bot_environment/bin/activate
 
 #install required python packages
-pip install twilio coinbase flask celery[redis] schedule
+pip install -r requirements.txt

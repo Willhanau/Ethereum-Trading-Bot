@@ -9,12 +9,12 @@ sudo easy_install pip virtualenv
 #brew install redis
 
 #create virtual python environment
-if [ ! -f "bot_environment" ]; then
-  virtualenv ./bot_environment
+if [ ! -f "EthBot_environment" ]; then
+  virtualenv EthBot_environment
 fi
 
 #enter virtualenv
 source bot_environment/bin/activate
 
 #install required python packages
-pip install twilio coinbase flask celery[redis] schedule
+pip install -r requirements_python.txt

@@ -1,0 +1,5 @@
+#files to ignore
+*.env
+
+#directories to ignore
+bot_environment

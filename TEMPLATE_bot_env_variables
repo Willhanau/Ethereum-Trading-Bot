@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+
+export USER_NUMBER=""
+export TWILIO_NUMBER=""
+export TWILIO_ACCOUNT_SID=""
+export TWILIO_AUTH_TOKEN=""
+
+export COINBASE_READ_API_KEY=""
+export COINBASE_READ_SECRET_KEY=""

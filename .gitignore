@@ -1,6 +1,7 @@
 #files to ignore
 *.env
 *.pem
+*.pyc
 
 #directories to ignore
 EthBot_environment

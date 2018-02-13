@@ -11,4 +11,6 @@ source bot_env_variables.env
 celery -A EthBot_flask.celery worker
 
 #run flask app in seperate console
+cd Ethereum-Trading-Bot
+source EthBot_environment/bin/activate
 python EthBot_flask.py

@@ -52,7 +52,7 @@ app.config.update(
 celery = make_celery(app)
 
 @celery.task(name='EthBot_flask.periodic_price_update')
-def periodic_price_update():
+def periodic_price_update(time):
     while(1):
         eth_price = get_eth_price()
         send_twilio_message(eth_price)
@@ -103,4 +103,4 @@ def incoming_sms_response():
     return str(resp)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=8080)

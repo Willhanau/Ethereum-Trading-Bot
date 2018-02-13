@@ -2,7 +2,7 @@
 
 ### Port forward using iptables
 ```bash
-sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT-to-ports 8080
+sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT --to-ports 8080
 ```
 
 ### Start flask app

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import schedule
 from os import environ
 from time import sleep
 from twilio.rest import Client as twilio_Client
@@ -27,7 +26,7 @@ twilio_client = twilio_Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 coinbase_client = coinbase_Client(COINBASE_READ_API_KEY, COINBASE_READ_SECRET_KEY)
 
 #App variables
-eth_price_updates_enabled = True
+price_updates = {"enabled": False, "celery_task": None}
 
 def get_eth_price():
     buy_price = coinbase_client.get_buy_price(currency_pair = 'ETH-USD')
@@ -52,9 +51,12 @@ app.config.update(
 )
 celery = make_celery(app)
 
-@celery.task()
-def add_together(a, b):
-    return a + b
+@celery.task(name='EthBot_flask.periodic_price_update')
+def periodic_price_update():
+    while(1):
+        eth_price = get_eth_price()
+        send_twilio_message(eth_price)
+        sleep(time)
 
 @app.route('/')
 def Test():
@@ -67,27 +69,36 @@ def incoming_sms_response():
     from_num = request.values.get('From')
     # Start our TwiML response
     resp = MessagingResponse()
+    if from_num == USER_NUMBER:
+        if body == 'u':
+            resp.message(get_eth_price())
 
-    if body == 'u':
-        resp.message(get_eth_price())
+        elif body == 'b':
+            resp.message("1 Ethereum Bought!")
 
-    elif body == 'b' and from_num == USER_NUMBER:
-        resp.message("1 Ethereum Bought!")
+        elif body == 's':
+            resp.message("1 Ethereum Sold!")
 
-    elif body == 's' and from_num == USER_NUMBER:
-        resp.message("1 Ethereum Sold!")
+        elif body == "stop updates":
+            if price_updates["enabled"]:
+                resp.message("Ethereum price updates have stopped.")
+                price_updates["enabled"] = False
+                price_updates["celery_task"].revoke()
+            else:
+                resp.message("Ethereum price updates are already disabled!")
 
-    elif body == "stop updates" and from_num == USER_NUMBER:
-        resp.message("Ethereum Price Updates Have Stopped.")
-        eth_price_updates_enabled = False
+        elif body == "start updates":
+            if price_updates["enabled"]:
+                resp.message("Ethereum price updates are already in effect!")
+            else:
+                resp.message("Ethereum price updates have resumed!")
+                price_updates["enabled"] = True
+                price_updates["celery_task"] = periodic_price_update.delay(3600)
 
-    elif body == "start updates" and from_num == USER_NUMBER:
-        resp.message("Ethereum Price Updates Have Resumed!")
-        eth_price_updates_enabled = True
-        sum_celery = add_together.delay(23, 42)
-
+        else:
+            resp.message("Text Options:\n U: Get current Ethereum coinbase price.\n B: Buy 1 Ethereum.\n S: Sell 1 Ethereum.\n Stop Updates: Stop automatic Ethereum price updates.\n Start Updates: Start automatic Ethereum price updates.")
     else:
-        resp.message("Text Options:\n U: Get current Ethereum coinbase price.\n B: Buy 1 Ethereum.\n S: Sell 1 Ethereum.\n Stop Updates: Stop automatic Ethereum price updates.\n Start Updates: Start automatic Ethereum price updates.")
+        resp.message("Unauthorized User.")
 
     return str(resp)
 

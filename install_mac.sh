@@ -14,7 +14,7 @@ if [ ! -f "EthBot_environment" ]; then
 fi
 
 #enter virtualenv
-source bot_environment/bin/activate
+source EthBot_environment/bin/activate
 
 #install required python packages
 pip install -r requirements_python.txt

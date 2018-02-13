@@ -83,7 +83,7 @@ def incoming_sms_response():
             if price_updates["enabled"]:
                 resp.message("Ethereum price updates have stopped.")
                 price_updates["enabled"] = False
-                price_updates["celery_task"].revoke()
+                price_updates["celery_task"].revoke(terminate=True)
             else:
                 resp.message("Ethereum price updates are already disabled!")
 

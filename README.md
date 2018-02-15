@@ -2,6 +2,7 @@
 
 ### Port forward using iptables
 ```bash
+#will forward all port 80 traffic to port 8080(flask server is on port 8080)
 sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT --to-ports 8080
 ```
 

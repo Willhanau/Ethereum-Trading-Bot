@@ -1,6 +1,6 @@
 # Ethereum-Trading-sms
 
-##Description
+## Description
 This is an app that uses the twilio and coinbase api to check the current Ethereum price, buy/sell ones ethereum, recieve ethereum price updates all via sms. Was a personal project to learn how to use the twilio and coinbase REST APIs.
 
 ### Port forward using iptables

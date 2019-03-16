@@ -1,4 +1,4 @@
-# Ethereum-Trading-Bot
+# Ethereum-Trading-sms
 
 ### Port forward using iptables
 ```bash
